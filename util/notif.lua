@@ -2,7 +2,7 @@ local Registry = {};
 local RegistryMap = {};
 local ProtectGui = protectgui or (syn and syn.protect_gui) or (function() end);
 
-local ScreenGui = Instance.new('ScreenGui');
+local ScreenGui = Instance.new("ScreenGui");
 ProtectGui(ScreenGui);
 
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global;
@@ -13,7 +13,7 @@ end
 function Create(Class, Properties)
     local _Instance = Class;
 
-    if type(Class) == 'string' then
+    if type(Class) == "string" then
         _Instance = Instance.new(Class);
     end;
 
