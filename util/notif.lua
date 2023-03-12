@@ -62,7 +62,7 @@ Create('UIListLayout', {
     SortOrder = Enum.SortOrder.LayoutOrder;
     Parent = NotificationArea;
 })
-function getgenv().Notify(Text, Time)
+getgenv().Notify = function(Text, Time)
     local MaxSize = GetTextBounds(Text, Enum.Font.Code, 14);
 
     local NotifyOuter = Create('Frame', {
