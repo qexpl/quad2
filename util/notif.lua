@@ -97,6 +97,21 @@ getgenv().Notify = function(Text, Time)
         Parent = NotifyInner;
     });
 
+    local function inputBegan(input)
+        xpcall(function()
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                task.spawn(function()
+                    xpcall(function()
+                        NotifyOuter:TweenSize(UDim2.new(0, 0, 0, 20), 'Out', 'Quad', 0.4, true)
+                        task.wait(0.4)
+                        NotifyOuter:Destroy()
+                    end,warn)
+                end)
+            end
+        end,warn)
+    end
+    InnerFrame.InputBegan:Connect(inputBegan)
+
     Create('UIGradient', {
         Color = ColorSequence.new({
             ColorSequenceKeypoint.new(0, Color3.fromRGB(27, 27, 27)),
