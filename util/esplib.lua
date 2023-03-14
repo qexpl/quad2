@@ -1,5 +1,4 @@
-local _, espLibrary = pcall((function()
-    --[[
+--[[
     made by siper#9938 and mickey#5612
 ]]
 
@@ -52,7 +51,7 @@ local espLibrary = {
         boxFillTransparency = 0.5,
         boxFillColor = Color3.new(1, 0, 0),
         healthBars = true,
-        healthBarsSize = 10,
+        healthBarsSize = 1,
         healthBarsTransparency = 1,
         healthBarsColor = Color3.new(0, 1, 0),
         healthText = true,
@@ -67,7 +66,7 @@ local espLibrary = {
         tracerTransparency = 1,
         tracerColor = Color3.new(1, 1, 1),
         tracerOrigin = "Bottom", -- Available [Mouse, Top, Bottom]
-        chams = false,
+        chams = true,
         chamsFillColor = Color3.new(1, 0, 0),
         chamsFillTransparency = 0.5,
         chamsOutlineColor = Color3.new(),
@@ -218,7 +217,7 @@ function espLibrary.getHealth(player, character)
     local humanoid = findFirstChild(character, "Humanoid");
 
     if (humanoid) then
-        return humanoid.Health, humanoid.MaxHealth;
+        return math.round(humanoid.Health), math.round(humanoid.MaxHealth);
     end
 
     return 100, 100;
@@ -272,19 +271,19 @@ function espLibrary.addEsp(player)
             Filled = true,
         }),
         boxOutline = create("Square", {
-            Thickness = 6,
+            Thickness = 3,
             Color = color3New()
         }),
         box = create("Square", {
-            Thickness = 4
+            Thickness = 1
         }),
         healthBarOutline = create("Square", {
-            Thickness = 8,
-            Color = color3New(255,255,255),
+            Thickness = 1,
+            Color = color3New(),
             Filled = true
         }),
         healthBar = create("Square", {
-            Thickness = 6,
+            Thickness = 1,
             Filled = true
         }),
         line = create("Line")
@@ -366,7 +365,7 @@ function espLibrary:AddObjectEsp(object, defaultOptions)
 
     insert(self.conns, object.Parent.ChildRemoved:Connect(function(child)
         if (child == object) then
-            pcall(self.removeObject(child));
+            self.removeObject(child);
         end
     end));
 
@@ -397,28 +396,21 @@ end
 
 function espLibrary:Load(renderValue)
     insert(self.conns, players.PlayerAdded:Connect(function(player)
-        pcall(function() 
-            self.addEsp(player);
-            self.addChams(player);
-        end)
+        self.addEsp(player);
+        self.addChams(player);
     end));
 
     insert(self.conns, players.PlayerRemoving:Connect(function(player)
-        pcall(function()
-            self.removeEsp(player);
-            self.removeChams(player);
-        end)
+        self.removeEsp(player);
+        self.removeChams(player);
     end));
 
     for _, player in next, players:GetPlayers() do
-        pcall(function()
-            self.addEsp(player);
+        self.addEsp(player);
         self.addChams(player);
-        end)
     end
 
     runService:BindToRenderStep("esp_rendering", renderValue or (Enum.RenderPriority.Camera.Value + 1), function()
-        pcall(function()
         for player, objects in next, self.espCache do
             local character, torso = self.getCharacter(player);
 
@@ -625,8 +617,6 @@ function espLibrary:Load(renderValue)
             cache.text.Position = round(screenPosition);
         end
     end);
-    end)
 end
 
 return espLibrary;
-end));
